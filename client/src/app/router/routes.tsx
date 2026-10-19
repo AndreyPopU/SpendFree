@@ -3,6 +3,7 @@ import App from "../layout/App";
 import { createBrowserRouter } from "react-router";
 import CreateExpense from "../layout/CreateExpense";
 import Dashboard from "../layout/Dashboard";
+import SignIn from "../layout/SignIn";
 
 export const router = createBrowserRouter([
     { path: '/', element: <App />, children: [
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
         {
             path: "newexpense",
             element: <CreateExpense />,
+        },
+        {
+            path: "login",
+            element: <SignIn />,
         },
     ] },
 ])

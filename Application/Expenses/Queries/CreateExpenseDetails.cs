@@ -1,35 +1,33 @@
+using System.ComponentModel.DataAnnotations;
 using API.Dtos;
+using Application.Core;
+using AutoMapper;
 using Domain;
+using FluentValidation;
 using MediatR;
 using Persistence;
+using ValidationException = System.ComponentModel.DataAnnotations.ValidationException;
 
 namespace Application.Expenses.Queries;
 
 public class CreateExpenseDetails
 {
-    public class Command : IRequest<int>
+    public class Command : IRequest<Result<int>>
     {
         public required ExpenseDto Expense { get; set; }
     }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Command, int>
+    public class Handler(AppDbContext context, IMapper mapper) : IRequestHandler<Command, Result<int>>
     {
-        public async Task<int> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(Command request, CancellationToken cancellationToken)
         {
-            Expense newExpense = new Expense
-            {
-                Name = request.Expense.Title,
-                CategoryId = request.Expense.CategoryId,
-                Description = request.Expense.Description,
-                Amount = request.Expense.Amount,
-                Date = DateTime.UtcNow
-            };
+            var newExpense = mapper.Map<Expense>(request.Expense);
 
             context.Expenses.Add(newExpense);
 
             await context.SaveChangesAsync(cancellationToken);
 
-            return newExpense.Id;
+            return Result<int>.Success(newExpense.Id);
         }
     }
 }

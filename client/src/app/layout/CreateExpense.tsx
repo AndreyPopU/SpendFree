@@ -27,7 +27,7 @@ export default function CreateExpense() {
       <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
         <Typography variant="h5">Create Expense</Typography>
 
-        <TextField label="Title" value={title} onChange={(e) => setTitle(e.target.value)} required />
+        <TextField label="Title" value={title} slotProps={{htmlInput: { maxLength: 20 }}} onChange={(e) => setTitle(e.target.value)} required />
 
         <TextField select label="Category" value={categoryId} onChange={(e) => setCategoryId(e.target.value)} required>
           <MenuItem value="1">Food</MenuItem>
@@ -42,6 +42,7 @@ export default function CreateExpense() {
           multiline
           rows={3}
           value={description}
+          slotProps={{htmlInput: { maxLength: 50 }}}
           onChange={(e) => setDescription(e.target.value)}
           required
         />

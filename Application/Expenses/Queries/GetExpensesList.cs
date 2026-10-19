@@ -1,3 +1,4 @@
+using Application.Core;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -7,13 +8,17 @@ namespace Application.Expenses.Queries;
 
 public class GetExpensesList
 {
-    public class Query : IRequest<List<Expense>> { }
+    public class Query : IRequest<Result<List<Expense>>> { }
 
-    public class Handler(AppDbContext context) : IRequestHandler<Query, List<Expense>>
+    public class Handler(AppDbContext context) : IRequestHandler<Query, Result<List<Expense>>>
     {
-        public async Task<List<Expense>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<Expense>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return await context.Expenses.ToListAsync(cancellationToken);
+            var result = await context.Expenses.ToListAsync(cancellationToken);
+
+            if (result == null) return Result<List<Expense>>.Failure("Failed to find expenses", 404);
+
+            return Result<List<Expense>>.Success(result);
         }
     }
 }

@@ -10,37 +10,37 @@ public class ExpensesController : BaseApiController
     [HttpGet]
     public async Task<ActionResult<List<Expense>>> GetExpenses()
     {
-        return await Mediator.Send(new GetExpensesList.Query());
+        return HandleResult(await Mediator.Send(new GetExpensesList.Query()));
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Expense>> GetExpenseById(int id)
     {
-        return await Mediator.Send(new GetExpenseDetails.Query { Id = id });
+        return HandleResult(await Mediator.Send(new GetExpenseDetails.Query { Id = id }));
     }
 
     [HttpGet("average")]
     public async Task<ActionResult<decimal>> GetAverageExpenses()
     {
-        return await Mediator.Send(new GetAverageExpenseDetails.Query());
+        return HandleResult(await Mediator.Send(new GetAverageExpenseDetails.Query()));
     }
 
     [HttpGet("total")]
     public async Task<ActionResult<decimal>> GetTotalExpenses()
     {
-        return await Mediator.Send(new GetExpenseOverall.Query());
+        return HandleResult(await Mediator.Send(new GetExpenseOverall.Query()));
     }
 
     [HttpGet("transactions")]
-    public async Task<ActionResult<decimal>> GetTransactions()
+    public async Task<ActionResult<int>> GetTransactions()
     {
-        return await Mediator.Send(new GetTransactions.Query());
+        return HandleResult(await Mediator.Send(new GetTransactions.Query()));
     }
 
     [HttpPost]
     public async Task<ActionResult<int>> CreateExpense([FromBody] ExpenseDto expense)
     {
-        return await Mediator.Send(new CreateExpenseDetails.Command { Expense = expense });
+        return HandleResult(await Mediator.Send(new CreateExpenseDetails.Command { Expense = expense }));
     }
 
     [HttpPut]

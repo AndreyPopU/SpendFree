@@ -26,6 +26,10 @@ export default function NavBar() {
                         <Button component={NavLink} to={"/newexpense"}
                             variant="text" sx={{ color: 'inherit', mx:2 }} >
                             New Expense </Button>
+
+                            <Button component={NavLink} to={"/login"}
+                            variant="text" sx={{ color: 'inherit', mx:2 }} >
+                            Login </Button>
                     </Toolbar>
                 </Container>
 
